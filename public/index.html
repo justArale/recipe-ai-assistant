@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Input Form</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Enter a New Recipe</h1>
+    <form id="recipe-form">
+      <div>
+        <label for="name">Recipe Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div>
+        <label for="ingredience">Ingredients:</label>
+        <textarea id="ingredience" name="ingredience" required></textarea>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+
+    <script src="script.js"></script>
+  </body>
+</html>

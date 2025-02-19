@@ -7,6 +7,22 @@ export const users = sqliteTable("users", {
   id: integer("id", { mode: "number" }).primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull(),
-  createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
-  updatedAt: text("updated_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
+});
+
+export const recipes = sqliteTable("recipes", {
+  id: integer("id", { mode: "number" }).primaryKey(),
+  name: text("name").notNull(),
+  ingredience: text("ingredience").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
 });
