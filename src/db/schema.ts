@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, json } from "drizzle-orm/sqlite-core";
 
 // export type NewUser = typeof users.$inferInsert;
 

@@ -1,27 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recipe Input Form</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Recipe List</title>
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Arial", sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      h1 {
+        color: #007bff;
+      }
+      .container {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+      }
+      .recipe-list,
+      .recipe-form {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 45%;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        background-color: red;
+        padding: 10px;
+        color: white;
+      }
+      .header img {
+        height: 50px;
+        margin-right: 10px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Enter a New Recipe</h1>
-    <form id="recipe-form">
-      <div>
-        <label for="name">Recipe Name:</label>
-        <input type="text" id="name" name="name" required />
+    <div class="header">
+      <img src="path/to/logo.png" alt="Logo" />
+      <h1>Le Recipe AI Assistant</h1>
+    </div>
+    <div class="container">
+      <div class="recipe-list">
+        <h1>Recipes</h1>
+        <ul>
+          ${recipeList}
+        </ul>
       </div>
-      <div>
-        <label for="ingredience">Ingredients:</label>
-        <textarea id="ingredience" name="ingredience" required></textarea>
+      <div class="recipe-form">
+        <h2>Add a new recipe</h2>
+        <form action="/add-recipe" method="post">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+          <br />
+          <label for="ingredience">Ingredients:</label>
+          <input type="text" id="ingredience" name="ingredience" required />
+          <br />
+          <button type="submit">Add Recipe</button>
+        </form>
       </div>
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
-
-    <script src="script.js"></script>
+    </div>
   </body>
 </html>
