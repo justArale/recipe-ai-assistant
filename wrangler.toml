@@ -27,3 +27,5 @@ enabled = true
 
 [ai]
 binding = "AI"
+
+assets = {directory = "public"}

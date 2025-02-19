@@ -43,32 +43,34 @@ const root = createRoute({
 //
 // We can add openapi documentation, as well as name the Schema in the OpenAPI document,
 // by chaining `openapi` on the zod schema definitions
-const UserSchema = z.object({
-  id: z.number().openapi({
-    example: 1,
-  }),
-  name: z.string().openapi({
-    example: "Matthew",
-  }),
-  email: z.string().email().openapi({
-    example: "matthew@cloudflare.com",
-  }),
-}).openapi("User");
+const RecipeSchema = z
+  .object({
+    id: z.number().openapi({
+      example: 1,
+    }),
+    name: z.string().openapi({
+      example: "Ramen",
+    }),
+    ingredience: z.string().email().openapi({
+      example: "Soba, brouth, pork, eggs",
+    }),
+  })
+  .openapi("User");
 
-const getUsers = createRoute({
+const getRecipes = createRoute({
   method: "get",
-  path: "/api/users",
+  path: "/api/recipes",
   responses: {
     200: {
-      content: { "application/json": { schema: z.array(UserSchema) } },
-      description: "Users fetched successfully",
+      content: { "application/json": { schema: z.array(RecipeSchema) } },
+      description: "Recipes fetched successfully",
     },
   },
 });
 
-const getUser = createRoute({
+const getRecipe = createRoute({
   method: "get",
-  path: "/api/users/{id}",
+  path: "/api/recipes/{id}",
   request: {
     // Validate and parse URL parameters
     params: z.object({
@@ -79,32 +81,33 @@ const getUser = createRoute({
   },
   responses: {
     200: {
-      content: { "application/json": { schema: UserSchema } },
-      description: "User fetched successfully",
+      content: { "application/json": { schema: RecipeSchema } },
+      description: "Recipe fetched successfully",
     },
   },
 });
 
+const NewRecipeSchema = z
+  .object({
+    name: z.string().openapi({
+      example: "Ramen",
+    }),
+    ingredience: z.string().email().openapi({
+      example: "Soba, brouth, pork, eggs",
+    }),
+  })
+  .openapi("NewRecipe");
 
-const NewUserSchema = z.object({
-  name: z.string().openapi({
-    example: "Matthew",
-  }),
-  email: z.string().email().openapi({
-    example: "matthew@cloudflare.com",
-  }),
-}).openapi("NewUser");
-
-const createUser = createRoute({
+const createRecipe = createRoute({
   method: "post",
-  path: "/api/user",
+  path: "/api/recipe",
   request: {
     // Validate request body using Zod schemas
     body: {
       required: true, // NOTE: this is important to set to true, otherwise the route will accept empty body
       content: {
         "application/json": {
-          schema: NewUserSchema,
+          schema: NewRecipeSchema,
         },
       },
     },
@@ -113,43 +116,47 @@ const createUser = createRoute({
     201: {
       content: {
         "application/json": {
-          schema: UserSchema,
+          schema: RecipeSchema,
         },
       },
-      description: "User created successfully",
+      description: "Recipe created successfully",
     },
   },
 });
 
 // Route Implementations
 // Connect the route definitions to their handlers using .openapi()
-app.openapi(root, (c) => {
-  return c.text("Honc from above! ☁️🪿");
-})
-  .openapi(getUsers, async (c) => {
+app
+  .openapi(root, (c) => {
+    return c.text("Honc from above! ☁️🪿");
+  })
+  .openapi(getRecipes, async (c) => {
     const db = c.get("db");
-    const users = await db.select().from(schema.users);
+    const users = await db.select().from(schema.recipes);
     return c.json(users);
   })
-  .openapi(getUser, async (c) => {
+  .openapi(getRecipe, async (c) => {
     const db = c.get("db");
     const { id } = c.req.valid("param");
-    const [user] = await db.select().from(schema.users).where(eq(schema.users.id, id));
+    const [user] = await db
+      .select()
+      .from(schema.recipes)
+      .where(eq(schema.recipes.id, id));
     return c.json(user);
   })
-  .openapi(createUser, async (c) => {
+  .openapi(createRecipe, async (c) => {
     const db = c.get("db");
-    const { name, email } = c.req.valid("json");
+    const { name, ingredience } = c.req.valid("json");
 
-    const [newUser] = await db
-      .insert(schema.users)
+    const [newRecipe] = await db
+      .insert(schema.recipes)
       .values({
         name,
-        email,
+        ingredience,
       })
       .returning();
 
-    return c.json(newUser, 201);
+    return c.json(newRecipe, 201);
   })
   // Generate OpenAPI spec at /openapi.json
   .doc("/openapi.json", {
@@ -160,8 +167,11 @@ app.openapi(root, (c) => {
       description: "D1 Honc! 🪿☁️",
     },
   })
-  .use("/fp/*", createFiberplane({
-    openapi: { url: "/openapi.json" },
-  }));
+  .use(
+    "/fp/*",
+    createFiberplane({
+      openapi: { url: "/openapi.json" },
+    })
+  );
 
 export default app;
